@@ -75,4 +75,43 @@ describe("re-plastic-tracker", () => {
   
   })
 
+  it("Confirm Product Update", async () => {
+    serialNum = "AAAA1113" 
+    let variant = 1
+    let rePlasticPct = 100     
+    let ingridientManufacturerKey = "AFhu69Fx9G6VstaqnqsPyp6maKsmjMZx1wdqKQi4swfm"
+    let purchaserKey = "CBjFUzrHh69d8ejgYkdEBet3srjHhHekHgtKNs7xmPsX"
+    let ingridientSerialNum = "AAAA1112";
+
+    [productAccount] = await PublicKey.findProgramAddress(
+      [
+        user.publicKey.toBytes(),
+        Buffer.from(anchor.utils.bytes.utf8.encode(serialNum))
+      ],
+      program.programId
+    )
+
+    await program.methods
+    .addOrUpdateProduct(variant, rePlasticPct, serialNum, ingridientManufacturerKey, ingridientSerialNum,purchaserKey)
+    .accounts({
+      initializer: user.publicKey,
+      pdaAccount: productAccount,
+      systemProgram: SystemProgram.programId
+    }) 
+    .signers([user])
+    .rpc(); 
+    // [reviewAccount] = await PublicKey.findProgramAddress(
+    //   [
+    //     user.publicKey.toBytes(),
+    //     Buffer.from(anchor.utils.bytes.utf8.encode(serialNum)),
+    //   ],
+    //   program.programId
+    // );
+
+    const storedProductAccount = await program.account.productAccountState.fetch(productAccount);
+    console.log(storedProductAccount)
+    assert.equal(storedProductAccount.rePlasticPct, 100)
+  
+  })
+
 });

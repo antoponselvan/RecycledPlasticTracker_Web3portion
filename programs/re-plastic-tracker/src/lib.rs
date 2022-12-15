@@ -6,7 +6,7 @@ pub mod state;
 use anchor_lang::prelude::*;
 use processor::*;
 
-declare_id!("Aq6sLZDjh3MiwpWyk1J84RQT7vKZfGtsZRaNGHtQfEwv");
+declare_id!("CnBe9kijpRjNv5ts2iUCKDGaZmoFVhtLTDTb1R7VSWDT");
 
 #[program]
 pub mod re_plastic_tracker {
